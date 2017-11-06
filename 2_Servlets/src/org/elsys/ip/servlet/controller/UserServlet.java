@@ -2,8 +2,14 @@ package org.elsys.ip.servlet.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +28,7 @@ public class UserServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public UserServlet() {
+	public UserServlet() throws NoSuchAlgorithmException {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -33,13 +39,17 @@ public class UserServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
-		User user = userService.getByName(request.getParameter("name"));
-		if (user != null) {
-			out.print("Welcome, " + user.getName()+ ". Your email is: " + user.getEmail());
+		String name = request.getParameter("name");
+		User user = userService.getByName(name);
+
+		if (user == null) {
+			out.println("No matches :(");
 		} else {
-			out.println("Welcome, anonymous.");
+			request.setAttribute("user", user);
+			response.setContentType("text/html");
+			getServletContext().getRequestDispatcher("/WEB-INF/user.jsp")
+				.forward(request, response);
 		}
 		out.close();
 	}
@@ -50,8 +60,19 @@ public class UserServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		doPut(request, response);
+
 	}
 
+	protected void doPut(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		String name = request.getParameter("name");
+		String newName = request.getParameter("newName");
+		String password = request.getParameter("password");
+		String email = request.getParameter("email");
+		userService.updateUser(name, newName, password, email);
+		request.setAttribute("user", userService.getByName(newName));
+		getServletContext().getRequestDispatcher("/WEB-INF/user.jsp")
+				.forward(request, response);
+	}
 }

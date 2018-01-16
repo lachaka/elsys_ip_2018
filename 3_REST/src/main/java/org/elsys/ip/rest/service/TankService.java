@@ -98,9 +98,9 @@ public class TankService {
                             .collect(Collectors.toList());
                 break;
 
-                case "usedby":
+                case "country":
                     tankList = tankList.stream()
-                            .filter(tank -> tank.getUsedBy().equals(queryParams.getFirst(key)))
+                            .filter(tank -> tank.getCountry().equals(queryParams.getFirst(key)))
                             .collect(Collectors.toList());
                 break;
             }

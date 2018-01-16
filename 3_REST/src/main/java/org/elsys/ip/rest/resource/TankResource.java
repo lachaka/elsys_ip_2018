@@ -10,7 +10,7 @@ import javax.ws.rs.core.*;
 import java.io.*;
 import java.util.List;
 
-@Path("tank")
+@Path("tanks")
 public class TankResource {
 
     private TankService tankService = new TankService();
@@ -60,7 +60,7 @@ public class TankResource {
         try {
             PrintWriter printWriter = new PrintWriter(file);
             StringBuilder sb = new StringBuilder();
-            sb.append("id,name,usedBy,manufacturer,type,weight,length,width,height,crew,speed\n");
+            sb.append("id,name,country,manufacturer,type,weight,length,width,height,crew,speed\n");
             for (Tank tank : tankService.getTankList()) {
                 sb.append(tank);
                 sb.append("\n");
@@ -135,19 +135,17 @@ public class TankResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadPdfFile(@FormDataParam("file") InputStream fileInputStream,
                                   @FormDataParam("file") FormDataContentDisposition fileData) throws Exception {
-        String path = "/home/lachaka/Desktop/" + fileData.getFileName();
-        try {
-            int read = 0;
-            byte[] bytes = new byte[1024];
-
-            OutputStream out = new FileOutputStream(new File(path));
-            while ((read = fileInputStream.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-            throw new WebApplicationException("Error!!!");
+        BufferedReader bufferedReader;
+        String row;
+        bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+        while ((row = bufferedReader.readLine()) != null) {
+            if (row.split(",")[0].equals("id"))
+                continue;
+            String column[] = row.split(",");
+            tankService.saveTank(new Tank(Integer.valueOf(column[0]), column[1], column[2],
+                    column[3], column[4], Float.valueOf(column[5]), Float.valueOf(column[6]),
+                    Float.valueOf(column[7]), Float.valueOf(column[8]),
+                    Integer.valueOf(column[9]), Float.valueOf(column[10])));
         }
         return Response.ok("Successfully uploaded !!!").build();
     }

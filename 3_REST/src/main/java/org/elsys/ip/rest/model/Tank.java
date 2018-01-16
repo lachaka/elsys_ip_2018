@@ -3,7 +3,7 @@ package org.elsys.ip.rest.model;
 public class Tank {
     private int id;
     private String name;
-    private String usedBy;
+    private String country;
     private String manufacturer;
     private String type;
     private float weight;
@@ -13,12 +13,12 @@ public class Tank {
     private int crew;
     private float speed;
 
-    public Tank(int id, String name, String usedBy, String manufacturer,
+    public Tank(int id, String name, String country, String manufacturer,
                 String type, float weight, float length, float width,
                 float height, int crew, float speed) {
         this.id = id;
         this.name = name;
-        this.usedBy = usedBy;
+        this.country = country;
         this.manufacturer = manufacturer;
         this.type = type;
         this.weight = weight;
@@ -48,12 +48,12 @@ public class Tank {
         this.name = name;
     }
 
-    public String getUsedBy() {
-        return usedBy;
+    public String getCountry() {
+        return country;
     }
 
-    public void setUsedBy(String usedBy) {
-        this.usedBy = usedBy;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getManufacturer() {
@@ -124,7 +124,7 @@ public class Tank {
     public String toString() {
         return id +
                 "," + name +
-                ',' + usedBy +
+                ',' + country +
                 ',' + manufacturer +
                 ',' + type +
                 "," + weight +

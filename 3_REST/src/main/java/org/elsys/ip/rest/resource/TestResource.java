@@ -39,19 +39,19 @@ public class TestResource {
    * @param id unique identifier of an object
    * @return Test
    */
-  @GET
+ /* @GET
   @Path("/{id}")
   @Produces("application/json")
   public Test getTest(@PathParam("id") Integer id) {
     return testService.getTestById(id);
-  }
+  }*/
 
   /**
    * Endpoint, which when accessed by a browser enables file download.
    *
    * @return Response
    */
-  @GET
+  /*@GET
   @Path("/download")
   @Produces(MediaType.APPLICATION_OCTET_STREAM)
   public Response downloadTest() {
@@ -61,20 +61,20 @@ public class TestResource {
       .header("Content-Disposition", "attachment; filename=" + file.getName())
       .build();
   }
-
+*/
   /**
    * Save endpoint
    *
    * @param test - JSON object with id and name - the fields of Test
    * @return the saved object
    */
-  @POST
+  /*@POST
   @Consumes("application/json")
   @Produces("application/json")
   public Test saveTest(Test test) {
     return testService.saveTest(test);
   }
-
+*/
   /**
    * Updates (in this case replaces) Test object with the given ID with the one in the parameters list.
    *
@@ -82,23 +82,23 @@ public class TestResource {
    * @param test
    * @return
    */
-  @PUT
+  /*@PUT
   @Path("/{id}")
   @Consumes("application/json")
   @Produces("application/json")
   public Test updateTest(@PathParam("id") Integer id, Test test) {
     return testService.updateTest(id, test);
   }
-
+*/
   /**
    * Deletes Test with the given ID
    *
    * @param id
    */
-  @DELETE
+  /*@DELETE
   @Path("/{id}")
   public void deleteTest(@PathParam("id") Integer id) {
     testService.deleteTest(id);
   }
-
+*/
 }
